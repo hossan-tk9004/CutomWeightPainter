@@ -42,6 +42,22 @@ def createScriptJob(func,event,parentUi,*args,**kwargs):
     scriptJob = cmds.scriptJob(e = [event,func],p=parentUi)
     return scriptJob
 
+def isJapaneseLanguage(*args,**kwargs):
+    """Mayaが日本語の言語設定かどうかを判定する
+    現在のMayaの言語設定が日本語かどうかを判定します。
+
+    Args:
+        None
+
+    Returns:
+        bool: 日本語の場合はTrue、それ以外はFalse
+
+    """
+    if cmds.about(uiLanguage=True) == 'ja_JP':
+        return True
+    else:
+        return False
+
 class poseActionStateObj(object):
     """ポーズアクションの状態を保持するクラス
     CutomWitghtPainterで対象のインフルエンスジョイントを回転させた後の
@@ -114,6 +130,8 @@ class CustomWeightPainterUI(object):
             om.MGlobal.displayWarning('カスタムコマンドの実行に失敗しました。\nToolの動作が正常でない可能性があります。')
         elif errorType == 3:
             om.MGlobal.displayWarning('対象のジョイントの取得に失敗しました。\nToolの動作が正常でない可能性があります。')
+        elif errorType == 4:
+            om.MGlobal.displayWarning('カスタムUIの格納に失敗しました。\nToolの動作が正常でない可能性があります。')
 
     def showWindow(self,*args,**kwargs):
         """ウィンドウを表示する
@@ -157,7 +175,32 @@ class CustomWeightPainterUI(object):
                                 axis = axis,
                                 preValues = self.preValues,
                                 actionType = actionType)
-                               
+    
+    def cutKeyInflenceLock(self,all = False,*args,**kwargs):
+        """キーをカットする
+        インフルエンスのロックを解除してキーをカットします。
+
+        Args:
+            all (bool): 全てのインフルエンスのキーをカットするか
+
+        Returns:
+            None
+        """
+        if all:
+            skinClusters = cmds.artAttrSkinPaintCtx(self.toolName,q = True,pna = True).split(' ')
+            targetIngluences = []
+            for skinCluster in skinClusters:
+                if cmds.objectType(skinCluster) != 'skinCluster':
+                    continue
+                influences = cmds.skinCluster(skinCluster,q = True,inf = True)
+                targetIngluences.extend(influences)
+            influences = list(set(targetIngluences))
+            utilityProc.cutKeyInflenceLock(targetIngluences)
+        else:
+            utilityProc.cutKeyInflenceLock(targetInflence = [self.targetInflence])
+        
+        # UIを更新
+        cmds.evalDeferred(self.showWindow)
 
     # for ui process
     def deleteUserControl(self,*args,**kwargs):
@@ -242,19 +285,19 @@ class CustomWeightPainterUI(object):
                                 c = utilityProc.createQuickSelectionSet)
                 cmds.shelfButton(style='iconAndTextVertical',
                                 iol = 'infLock',
-                                label='DelKey',ndp = True,
+                                label='Del All',ndp = True,
                                 image1='unlockGeneric.png',bgc = (0.4,0.2,0.2),
-                                c = lambda *args:utilityProc.cutKeyInflenceLock(self.targetInflence))
+                                c = lambda *args:self.cutKeyInflenceLock(all = True))
                 cmds.text(l = '')
 
                 cmds.shelfButton(style='iconAndTextVertical',
-                                iol = 'Set',
-                                label='Key',ndp = True,bgc = (0.2,0.2,0.4),
+                                iol = 'key',
+                                label='Set',ndp = True,bgc = (0.2,0.2,0.4),
                                 image1='setKeyframe.png',
                                 c = lambda *args:utilityProc.setKeyToTargetInflence(self.targetInflence))
                 cmds.shelfButton(style='iconAndTextVertical',
-                                iol = 'Del',
-                                label='Key',ndp = True,bgc = (0.4,0.2,0.2),
+                                iol = 'key',
+                                label='Del',ndp = True,bgc = (0.4,0.2,0.2),
                                 image1='setKeyframe.png',
                                 c = lambda *args:utilityProc.cutKeyTotargetInflence(self.targetInflence))
                 
@@ -347,6 +390,7 @@ class CustomWeightPainterUI(object):
         
         val = cmds.tabLayout(MainToolSettingsLayout, q = True, ca = True)
         
+        fl = None
         for v in val:
             col = '{}|{}'.format(MainToolSettingsLayout,v)
             children = cmds.columnLayout(col,q = True,ca = True) or []
@@ -354,13 +398,19 @@ class CustomWeightPainterUI(object):
                 if not cmds.frameLayout(ch,q = True,ex = True):
                     continue
                 labelName = cmds.frameLayout(ch,q =True,l = True)
-                if not labelName == 'Influences':
+                if isJapaneseLanguage():
+                    if not labelName == 'インフルエンス':
+                        continue
+                elif not labelName == 'Influences':
                     continue
 
                 fl = cmds.frameLayout(ch,q = True,ca=True)[0]
                 controls = cmds.formLayout(fl,q = True,ca = True)
                 break
-
+        
+        if not fl:
+            self.errorPrint(errorType = 4)
+            return
         self.createCostomUi(parent=fl)
         cmds.formLayout(fl,e = True,ac = [(controls[-1],'bottom',0,self.customUi)],
                                     af = [(self.customUi,'bottom',0),
