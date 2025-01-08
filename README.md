@@ -58,27 +58,33 @@ installer.pyと「CustomWeightPainter」フォルダは同じ階層にしてお�
 
 #### Utility機能
 1. GotoBP  
+   ![alt text](docImg/icn_gotobp.png)  
    選択オブジェクトをバインドポーズに戻します。  
    MayaのAutoKeyFrameの状態は無視するので、キーフレームは設定されません。
 2. SelObj  
+   ![alt text](docImg/icn_selobj.png)  
    選択オブジェクトを選択しなおします。  
    インフルエンスメニューの右クリックから頂点選択などをした後で、「オブジェクト選択状態にもどしたいなぁ…」という状況で便利です。
 3. MakeSet  
+   ![alt text](docImg/icn_makeset.png)  
    Quick Selection setを作ります。  
    Maya標準のQuick selection setの作成フローに処理を飛ばしているので、シェルフに選択セットを登録することもできます。
 4. Del All(inflence lock)  
+   ![alt text](docImg/icn_delallInf.png)  
    現在ペイント可能なすべてのインフルエンスオブジェクトに対し、
    - インフルエンスのロックを解除
    - もしもインフルエンスのロックアトリビュートにキーフレームが振られていた場合、それらのキーをすべて削除します。
   
    ウエイト作業をしていて、誤ってインフルエンスのロックにアニメーションキーを振ってしまった場合に便利です。
 5. Set(key)  
+   ![alt text](docImg/icn_setkey.png)  
    選択インフルエンスのrotateに対して３軸のキーフレームを設定します。  
    アトリビュートスライダーの右クリックからキーフレームを設定することも可能ですが、手っ取り早く行うのに便利です。
 6. Del(key)  
-   選択インフルエンスのrotateに対して３軸のキーフレームをすべて削除します。
+   ![alt text](docImg/icn_delkey.png)  
+   選択インフルエンスのrotateに対して３軸のキーフレームをすべて削除します。  
    アトリビュートスライダーの右クリックからキーフレームを削除することも可能ですが、手っ取り早く行うのに便利です。
 
----
+
 # 更新履歴
 - 2025/1/8 v1.0.0リリース
