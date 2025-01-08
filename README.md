@@ -1,6 +1,6 @@
 # CutomWeightPainter
 カスタムウエイトペインターはMaya標準のウエイトペイントToolの機能を拡張したToolです。
-![alt text](docImg\image-1.png)
+![alt text](docImg/image-1.png)
 基本、通常のMaya標準のウエイトペイントToolと同様に使用することができますが、一緒にいくつかの便利な機能を使うことができます。
 
 ## instalation
@@ -8,7 +8,7 @@
 まず、CustomWeightPainterのルートフォルダを任意の場所に配置してください。
 
 次に、installer.pyをMayaのモデルエディタ上にドラッグ＆ドロップしてください。
-![alt text](docImg\installation00.png)
+![alt text](docImg/installation00.png)
 
 すると、その時表示されているシェルフにボタンが追加されます。
 
@@ -21,7 +21,7 @@ installer.pyと「CustomWeightPainter」フォルダは同じ階層にしてお�
 スキンバインド済みのモデルメッシュを選択し、インストールしたシェルフボタンをクリックしてToolを立ち上げます。
 
 このとき、カスタムUIが追加されれば、問題なく起動完了しています。
-![alt text](docImg\customUi00.png)
+![alt text](docImg/customUi00.png)
 
 ### 便利な機能
 #### 1) ジョイントの回転機能
@@ -45,7 +45,7 @@ installer.pyと「CustomWeightPainter」フォルダは同じ階層にしてお�
 ジョイントを動かすフロー路スライダーはmelのattrFloatSliderGrpを使っています。  
 そのため、右クリックメニューから各種アトリビュートに対する処理が可能です。  
 
-![alt text](docImg\image.png)  
+![alt text](docImg/image.png)  
 この右クリックメニューはアトリビュートエディタからアトリビュートを右クリックした際に出るメニューと同じです。
 
 - セット キー
