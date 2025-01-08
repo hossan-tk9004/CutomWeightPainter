@@ -160,7 +160,7 @@ def setKeyToTargetInflence(targetInflence,*args,**kwargs):
     cmds.setKeyframe(targetInflence,at = 'ry')
     cmds.setKeyframe(targetInflence,at = 'rz')
 
-def cutKeyTotargetInflence(targetInflence,*args,**kwargs):
+def cutKeyTotargetInflence(targetInflences,*args,**kwargs):
     """指定のインフルエンスのキーフレームを削除する
     指定のインフルエンスのキーフレームを削除します。
 
@@ -171,25 +171,23 @@ def cutKeyTotargetInflence(targetInflence,*args,**kwargs):
         None
 
     """
-    if not cmds.objExists(targetInflence):
-        return
     
-    cmds.cutKey(targetInflence,at = 'rx')
-    cmds.cutKey(targetInflence,at = 'ry')
-    cmds.cutKey(targetInflence,at = 'rz')
+    cmds.cutKey(targetInflences,at = 'rx')
+    cmds.cutKey(targetInflences,at = 'ry')
+    cmds.cutKey(targetInflences,at = 'rz')
 
-def cutKeyInflenceLock(targetInflence,*args,**kwargs):
+def cutKeyInflenceLock(targetInflences,*args,**kwargs):
     """指定のインフルエンスのinflenceLockのキーを削除する。
-    指定のインフルエンスのinflenceLockのキーを削除します。
+    指定のインフルエンスのinflenceLockのキーを削除し、アンロックします。
     誤ってinflenceLockにキーが振られているケースで便利です。
 
     Args:
-        targetInflence (str): キーフレームを削除するインフルエンス
+        targetInflences(list): キーフレームを削除するインフルエンス
 
     Returns:
         None
 
     """
-    if not cmds.objExists(targetInflence):
-        return
-    cmds.cutKey(targetInflence,at = 'liw')
+    cmds.cutKey(targetInflences,at = 'liw')
+    for node in targetInflences:
+        cmds.setAttr('{}.liw'.format(node),False)
