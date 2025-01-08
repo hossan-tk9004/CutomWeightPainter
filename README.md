@@ -3,7 +3,7 @@
 ![alt text](docImg/image-1.png)
 基本、通常のMaya標準のウエイトペイントToolと同様に使用することができますが、一緒にいくつかの便利な機能を使うことができます。
 
-## instalation
+## installation
 ### インストール方法
 まず、CustomWeightPainterのルートフォルダを任意の場所に配置してください。
 
