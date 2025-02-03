@@ -300,6 +300,11 @@ class CustomWeightPainterUI(object):
                                 label='Del',ndp = True,bgc = (0.4,0.2,0.2),
                                 image1='setKeyframe.png',
                                 c = lambda *args:utilityProc.cutKeyTotargetInflence(self.targetInflence))
+                cmds.shelfButton(style='iconAndTextVertical',
+                                iol = '',
+                                label='Smooth',ndp = True,
+                                image1='smoothSkinWeights.png',
+                                c = utilityProc.DoWeightSmoother)
                 
         cmds.delete(tmpNode)
         cmds.select(selection)
