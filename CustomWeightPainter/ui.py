@@ -393,6 +393,9 @@ class CustomWeightPainterUI(object):
         fl = None
         for v in val:
             col = '{}|{}'.format(MainToolSettingsLayout,v)
+            if not cmds.columnLayout(col,q = True,ex = True):
+                continue
+
             children = cmds.columnLayout(col,q = True,ca = True) or []
             for ch in children:
                 if not cmds.frameLayout(ch,q = True,ex = True):
@@ -403,7 +406,8 @@ class CustomWeightPainterUI(object):
                         continue
                 elif not labelName == 'Influences':
                     continue
-
+                
+                # print(col)
                 fl = cmds.frameLayout(ch,q = True,ca=True)[0]
                 controls = cmds.formLayout(fl,q = True,ca = True)
                 break
