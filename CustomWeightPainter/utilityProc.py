@@ -13,18 +13,12 @@ try:
 except:
     pass
 import sys
-from importlib import reload
 sys.dont_write_bytecode = True
 # ------------------------------------------------------------------------------
 import traceback
 import maya.cmds as cmds
 import maya.mel as mel
 import maya.api.OpenMaya as om
-
-from .utilities import weightSmoother
-from .utilities import customGotoBindPose
-reload(weightSmoother)
-reload(customGotoBindPose)
 
 # wrapper
 def AvoidAutoKey(func):
@@ -64,8 +58,7 @@ def gotoBindPose(*args,**kwargs):
         None
 
     """
-    # mel.eval('GoToBindPose')
-    customGotoBindPose.customGotoBindPose()
+    mel.eval('GoToBindPose')
 
 # Pose action
 @AvoidAutoKey
@@ -198,15 +191,3 @@ def cutKeyInflenceLock(targetInflences,*args,**kwargs):
     cmds.cutKey(targetInflences,at = 'liw')
     for node in targetInflences:
         cmds.setAttr('{}.liw'.format(node),False)
-
-def DoWeightSmoother(repeat = 2,*args,**kwargs):
-    """選択ノードに対して、ウエイトスムーサーをかけます。
-    選択ノードに対して、Utility処理のウエイトスムーサーをかけます。
-
-    Args:
-        repeat (int): スムーサーの繰り返し回数
-
-    Returns:
-        None
-    """
-    weightSmoother.SmoothWeightSelection(repeat = repeat)
